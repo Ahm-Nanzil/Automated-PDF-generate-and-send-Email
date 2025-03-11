@@ -28,6 +28,9 @@ $b = $conf['business'];
                         <li><a href="#">Contact</a></li>
                     </ul>
                     <a href="#contact" class="btn quote-btn">Contact Us</a>
+                    &nbsp;&nbsp;
+                    <a href="invoiceinput.php" class="btn quote-btn">Email</a>
+
                 </div>
             </nav>
             <div id="showpiece">

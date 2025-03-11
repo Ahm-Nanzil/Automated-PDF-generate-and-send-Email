@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Email</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .logo {
+            width: 100px;
+            height: auto;
+            max-width: 100%;
+        }
+
+        @media (max-width: 576px) { 
+            .logo {
+                width: 70px; 
+            }
+        }
+
+        
+        .card {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            background-color: #f0f5ff;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: #3883f7;
+            border-top-left-radius: 12px !important;
+            border-top-right-radius: 12px !important;
+            padding: 15px;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,0.15) 50%);
+        }
+        
+        .envelope-icon {
+            background-color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            transform: rotate(-45deg);
+        }
+        
+        .email-img {
+            width: 30px; /* Adjust the size */
+            height: 30px;
+        }
+
+        
+        .welcome-title {
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2a6ad9;
+            text-align: right;
+            padding: 15px 20px 0;
+        }
+        
+        .btn-primary {
+            background-color: #3883f7;
+            border-color: #3883f7;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: #2a6ad9;
+            border-color: #2a6ad9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(42, 106, 217, 0.2);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .social-icons {
+        /* Replace flexbox with table-based centering which has better email client support */
+            width: 100%;
+            text-align: center;
+            margin: 15px auto;
+        }
+        
+        .social-icons table {
+            margin: 0 auto;
+            border-spacing: 10px;
+            border-collapse: separate;
+        }
+        
+        .social-icons .icon {
+            width: 30px;
+            height: 30px;
+            background-color: #e9f0ff;
+            border-radius: 50%;
+            display: inline-block;
+            text-align: center;
+            line-height: 30px;
+            vertical-align: middle;
+        }
+        
+        .social-icons .icon:hover {
+            background-color: #3883f7;
+            color: white;
+        }
+
+        .support-text {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .footer-logo {
+            margin-top: 15px;
+            height: 25px;
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: #c5d8ff;
+            margin: 15px 0;
+        }
+        
+        .company-info {
+            line-height: 1.6;
+        }
+        
+        .invoice-details {
+            background-color: #e9f0ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #3883f7;
+        }
+        
+        .content-wrapper {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .card-footer {
+            background-color: #e9f0ff;
+            border-top: none;
+            padding: 15px;
+        }
+        
+        a {
+            color: #3883f7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: #2a6ad9;
+            text-decoration: underline;
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .greeting-btn {
+            background-color: #3883f7;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .greeting-btn:hover {
+            background-color: #2a6ad9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(42, 106, 217, 0.2);
+        }
+        
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px;
+            margin-bottom: 0; /* Remove bottom margin */
+        }
+        
+        .content-wrapper {
+            margin-top: 0; /* Remove top margin */
+            border-top-left-radius: 0; /* Remove top-left radius */
+            border-top-right-radius: 0; /* Remove top-right radius */
+        }
+        
+        .invoice-date {
+            text-align: right;
+        }
+        
+        .signature-section {
+            padding: 0 15px 15px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            .card {
+                max-width: 95%;
+                margin: 0 auto;
+            }
+            
+            .welcome-title {
+                text-align: center;
+                font-size: 22px;
+            }
+            
+            .invoice-header {
+                flex-direction: column;
+            }
+            
+            .company-info, .invoice-date {
+                width: 100%;
+            }
+            
+            .invoice-date {
+                margin-top: 10px;
+                text-align: left;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .invoice-header, .content-wrapper {
+                padding: 30px;
+                margin-left: 20px;
+                margin-right: 20px;
+            }
+            
+            .company-info {
+                width: 60%;
+            }
+            
+            .invoice-date {
+                width: 40%;
+                text-align: right;
+            }
+        }
+        .responsive-logo {
+            height: 40px; 
+            width: auto;  
+            max-width: 100%; 
+        }
+        @media (max-width: 576px) { 
+            .responsive-logo {
+                height: 30px; 
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="logo-container">
+            <img src="https://ipon-europe.com/resources/images/brand.png" alt="Brand Logo" class="logo">
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="envelope-icon" style="text-align: center;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email Icon" class="email-img" style="margin: 5px;transform: rotate(45deg);">
+                </div>
+                
+            </div>
+            
+            <h1 class="welcome-title">Rechnung</h1>
+            
+            <div class="invoice-header">
+                <div class="company-info">
+                    <p>{{company}}<br>
+                    {{street}}<br>
+                    {{zip}} {{city}}</p>
+                </div>
+                
+                <div class="invoice-date">
+                    <p>{{date}}</p>
+                </div>
+            </div>
+            
+            <div class="content-wrapper">
+                <p>Sehr geehrte {{contact}},</p>
+                
+                <p>Hiermit erhalten Sie Ihre Rechnung für die Registrierung von {{itemDescription}}. Sie finden diese im Anhang. 
+                Wir möchten den Rechnungsbetrag innerhalb von 14 Tagen unter Angabe der Rechnungsnummer <strong>{{invoiceNumber}}</strong> begleichen.</p>
+                
+                <p>Wir möchten Sie darauf hinweisen, dass die Überweisung innerhalb der Zahlungsbedingung von 14 Tagen erfolgen muss, 
+                da dies mit unseren geltenden Regeln zur Registrierung von geistigem Eigentum zusammenhängt. Bitte berücksichtigen Sie die Bearbeitungszeit Ihrer Bank.</p>
+                
+                <p>Wenn Sie Fragen zur Rechnung haben oder diese nicht rechtzeitig und/oder nicht vollständig bezahlen können, 
+                wenden Sie sich bitte vor Ablauf der Zahlungsbedingung an unseren Kundenservice.</p>
+                
+                <div class="invoice-details">
+                    <p>Gesamtbetrag: <strong>{{totalAmount}}</strong></p>
+                    <p>Fälligkeitsdatum: <strong>{{dueDate}}</strong></p>
+                    <p>Zahlungsbedingungen: <strong>{{paymentTerms}}</strong></p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 5px; margin-bottom: 15px;">
+                <button style="background-color: #3883f7; color: white; border: none; border-radius: 25px; padding: 10px 25px; font-weight: 500; font-size: 16px; transition: all 0.3s ease; margin-top: 5px; margin-bottom: 15px; text-align: center; cursor: pointer;">Zum Kundenportal</button>
+            </div>
+            
+            
+            
+            <div class="signature-section">
+                <p>Mit freundlichen Grüßen,</p>
+                
+                <div class="company-info">
+                    <p><strong>{{myCompany}}</strong><br>
+                    {{myStreet}}<br>
+                    {{myZip}} {{myCity}}<br>
+                    {{myCountry}}<br>
+                    {{myPhone}}<br>
+                    {{myEmail}}<br>
+                    {{myWebsite}}<br>
+                    USt-IdNr: {{myVat}}<br>
+                    Handelsregister: {{myCoc}}</p>
+                </div>
+            </div>
+            
+            <div class="logo-section text-center">
+                <img src="https://ipon-europe.com/resources/images/brand.png" 
+                     alt="logo {{myCompany}}" 
+                     class="img-fluid responsive-logo">
+            </div>
+            
+            
+            <div class="card-footer">
+                <div class="divider"></div>
+                <p class="support-text mb-1">Bei Fragen stehen wir Ihnen gerne zur Verfügung. <a href="#">Kontaktieren Sie uns</a></p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="social-icons" style="text-align: center;">
+                <a href="" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" width="30" style="margin: 5px;">
+                </a>
+                <a href="" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" width="30" style="margin: 5px;">
+                </a>
+                <a href="" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733609.png" alt="GitHub" width="30" style="margin: 5px;">
+                </a>
+            </div>
+            
+            <p class="mb-1">Datenschutzrichtlinie | Abmelden</p>
+            <p class="mb-3">Copyright © 2025 {{myCompany}}</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
