@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="invoiceinput.php">Send Invoice PDF attached Only</a>
             <a href="invoice_input.php">Send Invoice PDF as Email Body</a>
             <a href="csvinput.php">Create New Invoice CSV</a>
-            <a href="pdf.php">Show all Generated PDF</a>
+            <a href="pdflist.php">Show all Generated PDF</a>
 
         </div>
 

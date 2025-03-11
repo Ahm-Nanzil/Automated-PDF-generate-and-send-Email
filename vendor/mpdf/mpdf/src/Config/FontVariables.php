@@ -101,12 +101,6 @@ class FontVariables
 					'useOTL' => 0xFF,
 					'useKashida' => 75,
 				],
-                /* begin zelf toegevoegd */
-                "sourcesanspro" => [
-                    'R' => "SourceSansPro-Regular.ttf",
-                    'B' => "SourceSansPro-Bold.ttf",
-                ],
-                /* einde zelf toegevoegd */
 				"dejavusans" => [
 					'R' => "DejaVuSans.ttf",
 					'B' => "DejaVuSans-Bold.ttf",
