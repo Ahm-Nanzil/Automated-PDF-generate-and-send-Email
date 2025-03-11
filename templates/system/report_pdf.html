@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>Report {{date}}</title>
+    <style>
+        body {
+            width:100%;
+            font-family: sourcesanspro;
+            font-size: 11px;
+            }
+        table {
+            margin-left:auto;
+            margin-right:auto;
+            }
+        td {
+            vertical-align:top;
+            }
+        th {
+            vertical-align:top;
+            text-align: left;
+            }
+        .report td {
+            border-bottom: 1px solid #cccccc;
+            font-weight:normal;
+            }
+        .report th {
+            border-bottom: 1px solid #cccccc;
+            }
+        hr {
+            width:100%;
+            border: 1px solid black;
+            margin-bottom: 0px;
+            margin-top: 0px;
+            }
+    </style>
+</head>
+<body>
+
+<htmlpagefooter name="myfooter">
+  <table style="width:100%; color:#173383; font-size:10;">
+        <tr>
+            <td style="width:40%;">
+                <strong>{{myCompany}}</strong><br>
+                {{myStreet}}<br>
+                {{myZip}} {{myCity}}
+            </td>
+            <td style="width:40%;">
+                <strong>Klantenservice</strong><br>
+                Openingstijden 09:00 - 17:00<br>
+                Tel {{myPhone}}
+            </td>
+            <td style="width:20%;">
+                <strong>IBAN/SWIFT</strong><br>
+                {{myIban}}<br>
+                {{myBic}}
+            </td>
+        </tr>
+    </table>
+</htmlpagefooter>
+
+<sethtmlpagefooter name="myfooter" value="on" />
+
+<table style="width:100%; font-size:10px;">
+    <tr>
+        <td style="width:50%; text-align:left;">
+            <img src="input/logo_{{confCountry}}.png" alt="" style="height:85px;"><br>
+        </td>
+        <td style="width:50%; text-align:right;">
+            <br>
+            <h1 style="color:#173383;">FINAL REPORT</h1>
+            <h3>{{myCompany}}</h3>
+            {{myWebsite}}<br>
+            {{date}}
+        </td>
+    </tr>
+</table>
+<br>
+<table style="width:100%;">
+    <tr>
+        <th style="width:13%;">Total amount:</th>
+        <td style="width:13%;">{{total}}</td>
+        <th style="width:13%;">Started at:</th>
+        <td style="width:37%;">{{time_start}}</td>
+        <th style="width:19%;">Number of runs:</th>
+        <td style="width:3%;">{{num_run}}</td>
+    </tr>
+    <tr>
+        <th>Succeeded:</th>
+        <td>{{success_total}}</td>
+        <th>Finished at:</th>
+        <td>{{time_end}}</td>
+        <th>Max lines per run:</th>
+        <td>{{max_per_run}}</td>
+    </tr>
+    <tr>
+        <th>Failed:</th>
+        <td>{{error_count}}</td>
+        <th>Total duration:</th>
+        <td>{{time_total}}</td>
+        <th>Average time per run:</th>
+        <td>{{avg_run_time}}</td>
+    </tr>
+</table>
+<hr>
+<br>
+<br>
+<table class="report" style="width:100%;border-collapse:collapse;">
+    <tr>
+        <th style="width:10%;">Line number</th>
+        <th style="width:10%;">Error type</th>
+        <th>Error description</th>
+    </tr>
+    {{report_errors}}
+</table>
+</body>
+</html>

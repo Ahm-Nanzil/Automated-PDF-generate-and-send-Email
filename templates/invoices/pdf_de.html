@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>Rechnung {{invoiceNumber}}</title>
+    <style>
+        body {
+			width:100%;
+			font-family: sourcesanspro;
+			font-size: 11px;
+			}
+        table {
+            margin-left:auto;
+            margin-right:auto;
+            }
+        td {
+            vertical-align:top;
+            }
+        hr {
+            width:100%;
+            border: 1px solid black;
+            margin-bottom: 0px;
+            margin-top: 0px;
+            }
+    </style>
+</head>
+<body>
+
+<htmlpagefooter name="myfooter">
+  <table style="width:100%; color:#173383; font-size:10;">
+        <tr>
+            <td style="width:40%;">
+            <strong>{{myCompany}}</strong><br>
+            {{myStreet}}<br>
+            {{myZip}} {{myCity}}
+            </td>
+            <td style="width:40%;">
+            <strong>Kundendienst</strong><br>
+            Öffnungszeiten 9-17 Uhr<br>
+            Tel {{myPhone}}
+            </td>
+            <td style="width:20%;">
+            <strong>IBAN/SWIFT</strong><br>
+            {{myIban}}<br>
+            {{myBic}}
+            </td>
+        </tr>
+    </table>
+</htmlpagefooter>
+
+<sethtmlpagefooter name="myfooter" value="on" />
+
+    <table style="width:100%; font-size:10px;">
+        <tr>
+            <td style="width:40%; text-align:left;">
+            <img src="https://certilinksolutions.com/wp-content/uploads/2023/09/logo-no-background.png" alt="logo" style="height:45px;"><br>
+            <strong>{{myCompany}}</strong><br>
+                {{myStreet}}<br>
+                {{myZip}} {{myCity}}<br>
+                {{myCountry}}<br>
+                {{myPhone}}<br>
+                {{myWebsite}}<br>
+                {{myEmail}}<br>
+                {{myVat}}<br>
+                {{myCoc}}
+            </td>
+            <td style="width:50%; text-align:right;"><br>
+            <br>
+            <h1 style="color:#173383;">RECHNUNG</h1><br>
+            <strong>{{company}}</strong><br>
+            t.a.v. {{contact}}<br>
+            {{street}}<br>
+            {{zip}} {{city}}<br>
+            <span style="text-transform:uppercase;">{{country}}</span><br>
+            <br>
+            {{vat}}
+        </td>
+        </tr>
+    </table>
+    <table style="width:90%;">
+        <tr>
+            <td style="width:20%; height:50px;">
+            </td>
+            <td style="width:80%;">
+            </td>
+        </tr>
+        <tr>
+            <td style="height:25px;">
+            Datum:
+            </td>
+            <td>
+            {{date}}
+            </td>
+        </tr>
+        <tr>
+            <td style="height:25px;">
+            Rechnungsnummer:
+            </td>
+            <td>
+            {{invoiceNumber}}
+            </td>
+        </tr>
+    </table>
+    <table style="width:90%;">
+        <tr>
+            <td style="height:30px;">
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:8%;">
+            <strong>Menge</strong>
+            </td>
+            <td style="width:10%;">
+            <strong>Code</strong>
+            </td>
+            <td style="width:62%;">
+            <strong>Beschreibung</strong>
+            </td>
+            <td style="width:3%;">
+            </td>
+            <td style="width:10%; text-align:right;">
+            <strong>Total</strong>
+            </td>
+            <td style="width:7%; text-align:right;">
+            <strong>MwSt</strong>
+            </td>
+        </tr>
+    </table>
+    <table style="width:90%;">
+        <tr>
+            <td>
+            <hr>
+            </td>
+        </tr>
+    </table>
+    <table style="width:90%;">
+        <tr>
+            <td style="width:8%;">
+            1
+            </td>
+            <td style="width:10%;">
+            
+            </td>
+            <td style="width:62%;">
+            Kommerziell Rechte an geistigem Eigentum zur <strong>{{website1}}</strong> Registrierung. Zeitraum <strong>2024/2029</strong>
+            </td>
+            <td style="width:3%; text-align:right;">
+            €
+            </td>
+            <td style="width:10%; text-align:right;">
+            
+            </td>
+            <td style="width:7%; text-align:right;">
+            0%
+            </td>
+        </tr>
+    </table>
+    <table style="width:90%;">
+        <tr>
+            <td>
+            <hr>
+            </td>
+        </tr>
+    </table>
+    <table style="width:90%; text-align:right;">
+        <tr>
+            <td style="width:55%;">
+            </td>
+            <td style="width:25%;">
+            Gesamt ohne MwSt
+            </td>
+            <td style="width:3%;">
+            €
+            </td>
+            <td style="width:10%;">
+           
+            </td>
+            <td style="width:7%;">
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+            MwSt. Übertragen 0%
+            </td>
+            <td>
+            €
+            </td>
+            <td>
+            0,00
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            <hr>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:left;">
+            MwSt. Überwiesen am <strong>{{vat}}</strong>
+            </td>
+            <td>
+            <strong>Total zu zahlen</strong>
+            </td>
+            <td>
+            <strong>€</strong>
+            </td>
+            <td>
+            <strong></strong>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </table>
+    <table style="width:70%;">
+        <tr>
+            <td style="height:50px;">
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center; font-size:10px;">
+            Wir bitten Sie, den fälligen Betrag innerhalb von <strong>14 Tagen</strong> zu überweisen die Rechnungsnummer auf Kontonummer: <strong>{{myIban}}</strong> im Namen des <strong>{{myBankAccountName}}</strong>.<br>
+            Unsere Allgemeinen Geschäftsbedingungen gelten für alle Leistungen. Sie können dies von unserer Website herunterladen.
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
