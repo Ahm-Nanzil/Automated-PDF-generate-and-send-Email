@@ -8,99 +8,40 @@ $mail = new PHPMailer(true);
 $recipientEmail = '';
 $recipientName = '';
 $companyName = '';
-try {
 
+try {
     $mail->isSMTP();
     $mail->Host = 'mail.ipon-europe.com'; 
-    $mail->SMTPAuth   = true;
+    $mail->SMTPAuth = true;
     $mail->Username = 'invoice@ipon-europe.com'; 
-    $mail->Password   = 'igNgC8ADW&9M';
+    $mail->Password = 'igNgC8ADW&9M';
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
     $mail->Port = 465;
 
-    $mail->setFrom('invoice@ipon-europe.com', 'IPon Europe'); 
+    $mail->setFrom('invoice@ipon-europe.com', 'IPon Europe');
 
-function loadCSVData($filePath, $invoiceNumber = null) {
-    
-    
-    if (!preg_match('~^/~', $filePath)) {
-        $filePath = __DIR__ . '/' . $filePath;
-    }
-    
-    if (!file_exists($filePath)) {
-        echo "Error: File $filePath not found.\n";
-        return [];
-    }
-    
-    $data = [];
-    
-    if (($handle = fopen($filePath, "r")) !== false) {
-        $headers = fgetcsv($handle);
-        
-        if ($headers === false) {
-            echo "Error: Unable to read headers from $filePath\n";
-            fclose($handle);
-            return [];
-        }
-        
-        while (($row = fgetcsv($handle)) !== false) {
-            
-            $rowData = array_fill_keys($headers, '');
-            
-            
-            for ($i = 0; $i < count($row); $i++) {
-                if (isset($headers[$i])) {
-                    $rowData[$headers[$i]] = $row[$i];
-                }
-            }
-            
-            
-            if ($invoiceNumber === null) {
-                $data[] = $rowData;
-            } else {
-               
-                if ((isset($rowData['Invoice Number']) && trim($rowData['Invoice Number']) === trim($invoiceNumber)) || 
-                    (isset($row[4]) && trim($row[4]) === trim($invoiceNumber))) {
-                    fclose($handle);
-                    return $rowData;
-                }
-            }
-        }
-        fclose($handle);
+    if (isset($invoice_to_send) && !empty($invoice_to_send)) {
+        $invoiceNumber = $invoice_to_send;
     } else {
-        echo "Error: Unable to open file $filePath\n";
+        echo "No invoice number provided!\n";
+        exit;
     }
-    
-    if ($invoiceNumber !== null && empty($data)) {
-        echo "Warning: Invoice number $invoiceNumber not found in $filePath\n";
-        return [];
+
+    if (isset($current_invoice_data) && !empty($current_invoice_data)) {
+        $invoiceData = $current_invoice_data;
+    } else {
+        echo "No invoice data provided!\n";
+        exit;
     }
-    
-    
-    return $invoiceNumber === null ? $data : [];
-}
 
-    
-
-
-if (isset($invoice_to_send) && !empty($invoice_to_send)) {
-    $invoiceNumber = $invoice_to_send;
-} else {
-    echo "No invoice number provided!\n";
-}
-    $baseDir = "/home/iponeuro/public_html/backuo/";
-
-$invoiceData = loadCSVData($baseDir . "invoice.csv", $invoiceNumber);
-$companyData = loadCSVData($baseDir . "company.csv");
-
-
-    if (!$invoiceData || !$companyData) {
-                echo "Error: Missing invoice or company data.\n";
-
-        die("Error: Missing invoice or company data.");
+    if (isset($current_company_data) && !empty($current_company_data)) {
+        $companyData = $current_company_data;
+    } else {
+        echo "No company data provided!\n";
+        exit;
     }
-    
-    
+
+
 
     $placeholders = [
         '{{company}}' => $invoiceData['Company Name'] ?? '',
@@ -132,14 +73,17 @@ $companyData = loadCSVData($baseDir . "company.csv");
     $recipientEmail = $invoiceData['Email'] ?? '';
     $recipientName = $invoiceData['Customer Name'] ?? '';
     $companyName = $invoiceData['Company Name'] ?? '';
-    $mail->addAddress($recipientEmail, "$recipientName - $companyName"); 
-
+    
     if (empty($recipientEmail)) {
-        die("Error: Recipient email address is missing.");
+        echo "Error: Recipient email address is missing for invoice $invoiceNumber.\n";
+        return;
     }
 
+    $mail->addAddress($recipientEmail, "$recipientName - $companyName");
+
     if (!$emailBody) {
-        die("Error: Could not read email template.");
+        echo "Error: Could not read email template.\n";
+        return;
     }
 
     $emailBody = str_replace(array_keys($placeholders), array_values($placeholders), $emailBody);
@@ -147,15 +91,18 @@ $companyData = loadCSVData($baseDir . "company.csv");
     $pdfPath = __DIR__ . "/templates/invoices/invoice_$invoiceNumber.pdf";
     if (file_exists($pdfPath)) {
         $mail->addAttachment($pdfPath, "Invoice_$invoiceNumber.pdf");
+    } else {
+        echo "Warning: PDF file not found at $pdfPath\n";
     }
 
     $mail->isHTML(true);
     $mail->Subject = 'Ihre Rechnung - ' . $invoiceNumber;
-    $mail->Body    = $emailBody;
+    $mail->Body = $emailBody;
     $mail->AltBody = strip_tags($emailBody);
 
     $mail->send();
-    echo 'Email has been sent successfully!';
+    echo "Email has been sent successfully for invoice $invoiceNumber!\n";
 } catch (Exception $e) {
-    echo "Email could not be sent. Error: {$mail->ErrorInfo}";
+    echo "Email could not be sent for invoice $invoiceNumber. Error: {$mail->ErrorInfo}\n";
 }
+?>

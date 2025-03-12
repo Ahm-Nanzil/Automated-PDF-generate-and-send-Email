@@ -1,55 +1,68 @@
 <?php
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$csvFile = '/home/iponeuro/public_html/backuo/invoice.csv'; 
+$baseDir = '/home/iponeuro/public_html/backuo/';
+$csvFile = $baseDir . 'invoice.csv';
 
 if (!file_exists($csvFile)) {
     die("CSV file not found.");
 }
 
-$file = fopen($csvFile, 'r');
+require_once 'generate_pdf.php';
 
-if (!$file) {
-    die("Unable to open the CSV file.");
+function getInvoiceData($csvFilePath, $invoiceNumber = null) {
+    $csvData = [];
+
+    if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
+        $headers = fgetcsv($handle, 1000, ",");
+
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            $row = array_fill_keys($headers, '');
+
+            for ($i = 0; $i < count($data); $i++) {
+                if (isset($headers[$i])) {
+                    $row[$headers[$i]] = $data[$i];
+                }
+            }
+
+            if ($invoiceNumber !== null && isset($row['Invoice Number']) && trim($row['Invoice Number']) === trim($invoiceNumber)) {
+                fclose($handle);
+                return $row;
+            }
+
+            $csvData[] = $row;
+        }
+        fclose($handle);
+    }
+
+    return $invoiceNumber !== null ? [] : $csvData;
 }
 
-$headers = fgetcsv($file);
+$companyData = getInvoiceData($baseDir . 'company.csv');
+$companyData = !empty($companyData) ? $companyData[0] : [];
 
-require_once 'generate_pdf.php'; 
+$invoices = getInvoiceData($csvFile);
+$processedCount = 0;
 
-while (($row = fgetcsv($file)) !== false) {
-    $email = trim($row[0]); 
-    $customerName = trim($row[1]);
-    $companyName = trim($row[2]);
-    $address = trim($row[3]);
-    $invoiceNumber = trim($row[4]);
-    $customerNumber = trim($row[5]);
-    $vatId = trim($row[6]);
-    $invoiceDate = trim($row[7]);
-    $dueDate = trim($row[8]);
-    $itemDescription = trim($row[9]);
-    $quantity = trim($row[10]);
-    $price = trim($row[11]);
-    $totalAmount = trim($row[12]);
-    $iban = trim($row[13]);
-    $swift = trim($row[14]);
-    $bankName = trim($row[15]);
-    $paymentTerms = trim($row[16]);
-
+foreach ($invoices as $invoiceData) {
+    $invoiceNumber = trim($invoiceData['Invoice Number'] ?? '');
+    
     if (!empty($invoiceNumber)) {
-    generateInvoicePdf($invoiceNumber);
-
-        $invoice_to_send = $invoiceNumber; 
-        include(__DIR__ . "/../backuo/sendmail.php");
-
-
+        echo "Processing invoice: $invoiceNumber\n";
+        
+        generateInvoicePdf($invoiceNumber);
+        
+        $invoice_to_send = $invoiceNumber;
+        $current_invoice_data = $invoiceData;
+        $current_company_data = $companyData;
+        
+        include($baseDir . "sendmail.php");
+        
+        $processedCount++;
+        echo "Completed processing invoice: $invoiceNumber\n";
     }
 }
 
-fclose($file);
-
-echo "All invoices processed successfully.";
-
+echo "All invoices processed successfully. Total: $processedCount\n";
 ?>
