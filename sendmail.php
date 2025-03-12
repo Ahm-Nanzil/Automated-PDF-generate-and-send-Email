@@ -9,53 +9,98 @@ $recipientEmail = '';
 $recipientName = '';
 $companyName = '';
 try {
+
     $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com';
+    $mail->Host = 'mail.ipon-europe.com'; 
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'ahmnanzil33@gmail.com';
-    $mail->Password   = 'hpitjdlzhhmnhurc';
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = 587;
+    $mail->Username = 'invoice@ipon-europe.com'; 
+    $mail->Password   = 'igNgC8ADW&9M';
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
+    $mail->Port = 465;
 
     $mail->setFrom('invoice@ipon-europe.com', 'IPon Europe'); 
 
-    function loadCSVData($filePath, $invoiceNumber = null) {
-        $data = [];
-        if (($handle = fopen($filePath, "r")) !== false) {
-            $header = fgetcsv($handle);
+function loadCSVData($filePath, $invoiceNumber = null) {
+    
+    
+    if (!preg_match('~^/~', $filePath)) {
+        $filePath = __DIR__ . '/' . $filePath;
+    }
+    
+    if (!file_exists($filePath)) {
+        echo "Error: File $filePath not found.\n";
+        return [];
+    }
+    
+    $data = [];
+    
+    if (($handle = fopen($filePath, "r")) !== false) {
+        $headers = fgetcsv($handle);
+        
+        if ($headers === false) {
+            echo "Error: Unable to read headers from $filePath\n";
+            fclose($handle);
+            return [];
+        }
+        
+        while (($row = fgetcsv($handle)) !== false) {
             
-            // Process each row
-            while (($row = fgetcsv($handle)) !== false) {
-                // Make sure the row has the same number of elements as the header
-                // If not, pad the shorter array with empty strings
-                if (count($header) > count($row)) {
-                    $row = array_pad($row, count($header), "");
-                } elseif (count($header) < count($row)) {
-                    $header = array_pad($header, count($row), "Column" . (count($header) + 1));
-                }
-                
-                if ($invoiceNumber === null || (isset($row[4]) && $row[4] == $invoiceNumber)) {
-                    $data = array_combine($header, $row);
-                    break;
+            $rowData = array_fill_keys($headers, '');
+            
+            
+            for ($i = 0; $i < count($row); $i++) {
+                if (isset($headers[$i])) {
+                    $rowData[$headers[$i]] = $row[$i];
                 }
             }
-            fclose($handle);
+            
+            
+            if ($invoiceNumber === null) {
+                $data[] = $rowData;
+            } else {
+               
+                if ((isset($rowData['Invoice Number']) && trim($rowData['Invoice Number']) === trim($invoiceNumber)) || 
+                    (isset($row[4]) && trim($row[4]) === trim($invoiceNumber))) {
+                    fclose($handle);
+                    return $rowData;
+                }
+            }
         }
-        return $data;
+        fclose($handle);
+    } else {
+        echo "Error: Unable to open file $filePath\n";
     }
+    
+    if ($invoiceNumber !== null && empty($data)) {
+        echo "Warning: Invoice number $invoiceNumber not found in $filePath\n";
+        return [];
+    }
+    
+    
+    return $invoiceNumber === null ? $data : [];
+}
+
     
 
-    if ($argc < 2) {
-        die("Error: Invoice number is required");
-    }
-    $invoiceNumber = $argv[1]; 
-    
-    $invoiceData = loadCSVData("invoice.csv", $invoiceNumber);
-    $companyData = loadCSVData("company.csv");
+
+if (isset($invoice_to_send) && !empty($invoice_to_send)) {
+    $invoiceNumber = $invoice_to_send;
+} else {
+    echo "No invoice number provided!\n";
+}
+    $baseDir = "/home/iponeuro/public_html/backuo/";
+
+$invoiceData = loadCSVData($baseDir . "invoice.csv", $invoiceNumber);
+$companyData = loadCSVData($baseDir . "company.csv");
+
 
     if (!$invoiceData || !$companyData) {
+                echo "Error: Missing invoice or company data.\n";
+
         die("Error: Missing invoice or company data.");
     }
+    
+    
 
     $placeholders = [
         '{{company}}' => $invoiceData['Company Name'] ?? '',

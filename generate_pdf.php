@@ -4,12 +4,10 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 function fetchInvoiceHtml($invoiceNumber) {
-    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-    $host = $_SERVER['HTTP_HOST'];
-    $path = dirname($_SERVER['PHP_SELF']);
-    
-    $url = $protocol . $host . $path . '/pdfcontent.php?invoice=' . urlencode($invoiceNumber);
-    
+    $protocol = "https://"; 
+    $host = "ipon-europe.com/backuo"; 
+    $url = $protocol . $host . '/pdfcontent.php?invoice=' . urlencode($invoiceNumber);
+
     $html = file_get_contents($url);
     
     if (!$html) {

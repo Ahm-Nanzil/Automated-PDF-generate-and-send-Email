@@ -1,6 +1,2 @@
 Email,Customer Name,Company Name,Address,Invoice Number,Customer Number,VAT ID,Invoice Date,Due Date,Item Description,Quantity,Price,Total Amount,IBAN,SWIFT,Bank Name,Payment Terms
 eva.kommas@example.com,Eva Kommas,SCRATCH Pharmacovigilance GmbH & Co. KG,"Schlossstraße 25, 35510 BUTZBACH, Germany",2559817,944,DE268771241,04-03-2025,18-03-2025,scratch-pv.com Markenregistrierung Europa Kommerziell 2025 - 2026,1,"€ 863,42","€ 863,42",ES27 0073 0100 5107 8500 3951,OPENESMM,OPEN BANK S.A.,Fällig in 14 Tagen
-ahm@gmail.com,John Doe,XYZ Pharma Ltd.,"1234 Market Street, Berlin, Germany",2559818,945,DE123456789,05-03-2025,19-03-2025,XYZ Pharma Registration Europe 2025 - 2026,1,"€ 950,00","€ 950,00",ES27 0073 0100 5107 8500 3952,OPENESMM,OPEN BANK S.A.,Fällig in 14 Tagen
-
-ahmnanzil33@gmail.com,Nanzil,test company,"Dhaka Bangladesh",123456789,235435,4234324345646,19-20-45,13-12-24,item,1,"56455","€ 56455,00",rf ibaln lkd,swift,Ab,Fällig in 14 Tagen
-ahmnanzil111@gmail.com,Abu Hasib,NanTech,"Dhaka",123546456,23q4235,4234324345646,19-20-45,13-12-24,item,1,"324","€ 324,00",423,Ab,Fällig in 14 Tagen

@@ -2,37 +2,42 @@
 if (!isset($_GET['invoice'])) {
     die("Error: Invoice number is required.");
 }
+
 function getInvoiceData($csvFilePath, $invoiceNumber = null) {
     $csvData = [];
-    
+
     if (($handle = fopen($csvFilePath, "r")) !== FALSE) {
         $headers = fgetcsv($handle, 1000, ",");
-        
+
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-            if (count($data) === count($headers)) {
-                $row = array_combine($headers, $data);
-                
-                if ($invoiceNumber !== null && $row['Invoice Number'] == $invoiceNumber) {
-                    fclose($handle);
-                    return $row;
+            $row = array_fill_keys($headers, '');
+
+            for ($i = 0; $i < count($data); $i++) {
+                if (isset($headers[$i])) {
+                    $row[$headers[$i]] = $data[$i];
                 }
-                
-                $csvData[] = $row;
             }
+
+            if ($invoiceNumber !== null && trim($row['Invoice Number']) === trim($invoiceNumber)) {
+                fclose($handle);
+                return $row;
+            }
+
+            $csvData[] = $row;
         }
         fclose($handle);
     }
-    
-    if ($invoiceNumber !== null && !empty($csvData)) {
-        return $csvData[0];
-    }
-    
+
     return $invoiceNumber !== null ? [] : $csvData;
 }
 
 $requestedInvoice = isset($_GET['invoice']) ? $_GET['invoice'] : null;
 
-$invoiceData = getInvoiceData('invoice.csv', $requestedInvoice);
+
+$baseDir = "/home/iponeuro/public_html/backuo/";
+
+$invoiceData = getInvoiceData($baseDir . "invoice.csv", $requestedInvoice);
+
 
 if (empty($invoiceData)) {
     echo "Invoice not found.";
@@ -190,7 +195,7 @@ $paymentTerms = $invoiceData['Payment Terms'];
             <table width="100%" cellspacing="0" cellpadding="0">
                 <tr>
                     <td align="left" class="eu-map" width="40%">
-                        <img src="https://ipon-europe.com/resources/images/EU.png" alt="EU Map">
+                        <img src="https://ipon-europe.com/backuo/resources/images/EU.png" alt="EU Map">
                         <div class="customer-info">
                             <p class="bold"><?php echo htmlspecialchars($companyName); ?><br>
                                 <?php echo htmlspecialchars($customerName);?><br>

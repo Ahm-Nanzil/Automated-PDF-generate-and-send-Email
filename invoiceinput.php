@@ -16,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $output = shell_exec($sendMailCommand);
 
-            // echo "<pre>Output: $output</pre>";
 
             $message .= "<p>Email sent successfully!</p>"; 
 
@@ -123,8 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="invoiceinput.php">Send Invoice PDF attached Only</a>
             <a href="invoice_input.php">Send Invoice PDF as Email Body</a>
             <a href="csvinput.php">Create New Invoice CSV</a>
-            <a href="pdf.php">Show all Generated PDF</a>
-
+                        <a href="pdf.php">Show all Generated PDF</a>
         </div>
 
         <?php if ($message): ?>
