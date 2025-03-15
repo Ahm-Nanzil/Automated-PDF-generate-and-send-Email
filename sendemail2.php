@@ -7,7 +7,7 @@ require 'vendor/autoload.php';
 $invoiceNumber = isset($argv[1]) ? $argv[1] : null;
 
 if (!$invoiceNumber) {
-    die("Error: Invoice number is required.");
+    die("Error: Invoice number is required in sendmail2.");
 }
 
 $csvFile = 'invoice.csv';

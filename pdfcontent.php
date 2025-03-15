@@ -1,6 +1,19 @@
 <?php
-if (!isset($_GET['invoice'])) {
-    die("Error: Invoice number is required.");
+// if (!isset($_GET['invoice'])) {
+//     die("Error: Invoice number is required in pdfcontent.");
+// }
+
+if (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__)) {
+    if (!isset($_GET['invoice'])) {
+        die("Error: Invoice number is required in pdfcontent.");
+    }
+    $requestedInvoice = $_GET['invoice'];
+} else {
+    
+    if (!isset($invoiceNumber)) {
+        die("Error: Invoice number is required when including pdfcontent.");
+    }
+    $requestedInvoice = $invoiceNumber;
 }
 
 function getInvoiceData($csvFilePath, $invoiceNumber = null) {
@@ -31,10 +44,12 @@ function getInvoiceData($csvFilePath, $invoiceNumber = null) {
     return $invoiceNumber !== null ? [] : $csvData;
 }
 
-$requestedInvoice = isset($_GET['invoice']) ? $_GET['invoice'] : null;
+// $requestedInvoice = isset($_GET['invoice']) ? $_GET['invoice'] : null;
 
 
-$baseDir = "/home/iponeuro/public_html/backuo/";
+// $baseDir = "/home/iponeuro/public_html/backuo/";
+$baseDir = "";
+
 
 $invoiceData = getInvoiceData($baseDir . "invoice.csv", $requestedInvoice);
 

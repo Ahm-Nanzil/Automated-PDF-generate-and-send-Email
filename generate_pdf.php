@@ -8,8 +8,11 @@ function fetchInvoiceHtml($invoiceNumber) {
     $host = "ipon-europe.com/backuo"; 
     $url = $protocol . $host . '/pdfcontent.php?invoice=' . urlencode($invoiceNumber);
 
-    $html = file_get_contents($url);
-    
+    // $html = file_get_contents($url);
+    include 'pdfcontent.php'; // Assuming it's in the same directory
+    // $html = getInvoiceContent($invoiceNumber);
+    $html = file_get_contents(__DIR__ . '/pdfcontent.php');
+
     if (!$html) {
         die("Error: Could not fetch invoice content for invoice #$invoiceNumber");
     }
@@ -19,7 +22,7 @@ function fetchInvoiceHtml($invoiceNumber) {
 
 function generateInvoicePdf($invoiceNumber) {
     if (empty($invoiceNumber)) {
-        die("Error: Invoice number is required.");
+        die("Error: Invoice number is required in generate_pdf.");
     }
     
     $options = new Options();

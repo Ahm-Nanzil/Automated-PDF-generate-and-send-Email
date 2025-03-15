@@ -90,7 +90,7 @@ if (isset($_POST['add_invoice']) && $_POST['add_invoice'] == 'true') {
 }
 
 $viewLink = 'csvinput.php'; 
-$backLink = 'invoiceinput.php'; 
+$backLink = 'index.php'; 
 
 ?>
 
